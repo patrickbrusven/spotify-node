@@ -1,3 +1,4 @@
+const querystring = require('querystring');
 const express = require('express')
 require('dotenv').config()
 const app = express()
@@ -12,7 +13,13 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-  res.redirect('https://accounts.spotify.com/authorize?' + `client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=user-read-private%20user-read-email`);
+  const queryParams = querystring.stringify({
+    client_id: CLIENT_ID,
+    redirect_uri: REDIRECT_URI,
+    response_type: 'code',
+    scope: 'user-read-private user-read-email',
+  });
+  res.redirect(`https://accounts.spotify.com/authorize?${queryParams}`);
 })
 
 app.get('/callback', function(req, res) {
